@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { compose, setDisplayName, lifecycle, withState, withProps } from 'recompose'
 import { getHelper } from './utils/requestHelper'
+import { Button } from 'reactstrap'
 
 const addPostsState = compose(
     withState('posts', 'setPosts', []),
@@ -43,9 +44,10 @@ class App extends Component {
                 <p className="App-intro">
                     reviewing things that bring us <code>JOY</code>
                 </p>
+                <Button color="danger">Classic</Button>
                 <Posts/>
             </div>
-        );
+        )
     }
 }
 

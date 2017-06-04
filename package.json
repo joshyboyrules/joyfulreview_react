@@ -20,5 +20,5 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://joshyboyrules.github.io/joyfulreview_react"
+  "homepage": "https://joshyboyrules.github.io"
 }

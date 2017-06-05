@@ -6,7 +6,7 @@ const About = (props) => {
   return (
     <div className={classnames('About', className)}>
       <h1>About section</h1>
-      <p>another change :)</p>
+      <p>another change :)!</p>
       <p>This is the about section, why joyful review is amazing</p>
     </div>
   )

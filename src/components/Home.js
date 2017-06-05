@@ -1,7 +1,12 @@
 import React from 'react'
 import { compose, setDisplayName, lifecycle, withState, withProps } from 'recompose'
 import { getHelper } from '../utils/requestHelper'
-import { Button } from 'reactstrap'
+import {
+  Card, CardImg, CardText, CardBlock,
+  CardTitle, CardSubtitle, Row, Col, Container, Button
+} from 'reactstrap'
+import renderHTML from 'react-render-html'
+import classnames from 'classnames'
 
 const addPostsState = compose(
   withState('posts', 'setPosts', []),
@@ -24,17 +29,34 @@ const enhancePosts = compose(
 )
 
 const Posts = enhancePosts((props) => {
+  const { posts } = props
   return (
-    <pre>
-      {JSON.stringify(props.posts, undefined, 2)}
-    </pre>
+    <div>
+      <Container>
+        <Row>
+          {posts.map((post, index) => {
+            console.log(post)
+            return (
+              <Col md="4" key={index}>
+                <Card className={classnames('hover-click', 'hover-card')}>
+                  <CardBlock>
+                    <CardTitle>{renderHTML(post.title.rendered)}</CardTitle>
+                    <CardSubtitle><small>{post.date}</small></CardSubtitle>
+                    {renderHTML(post.excerpt.rendered)}
+                    <Button>Button</Button>
+                  </CardBlock>
+                </Card>
+              </Col>)
+          })}
+        </Row>
+      </Container>
+    </div>
   )
 })
 
 const Home = (props) => {
   return (
     <div>
-      <Button color="danger">Classic</Button>
       <Posts/>
     </div>
   )

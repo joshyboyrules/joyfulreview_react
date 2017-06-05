@@ -17,16 +17,14 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo"/>
           <h2>Welcome to joyfulreview!</h2>
         </div>
-        <p className="App App-intro">
-          reviewing things that bring us <code>JOY</code>
-        </p>
+        <br/>
         <div>
           <Container>
             <Row>
-              <Col sm="3">
+              <Col md="2">
                 <LeftNav/>
               </Col>
-              <Col sm="9">
+              <Col md="10">
                 <Switch>
                   <Route exact path="/" component={Home} />
                   <Route exact path="/about" component={About} />

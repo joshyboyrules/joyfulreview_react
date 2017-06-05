@@ -1,10 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
-import './index.css';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'reactstrap/dist/reactstrap.min';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+import registerServiceWorker from './registerServiceWorker'
+import './index.css'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'reactstrap/dist/reactstrap.min'
+import { BrowserRouter } from 'react-router-dom'
 
-ReactDOM.render(<App/>, document.getElementById('root'));
-registerServiceWorker();
+ReactDOM.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
+  document.getElementById('root')
+)
+registerServiceWorker()

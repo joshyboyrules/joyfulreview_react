@@ -8,6 +8,7 @@ import {
 import renderHTML from 'react-render-html'
 import classnames from 'classnames'
 import debounce from 'lodash/debounce'
+import { Link } from 'react-router-dom'
 
 const addPostsState = compose(
   withState('posts', 'setPosts', []),
@@ -68,18 +69,20 @@ const Posts = enhancePosts((props) => {
         </Row>
         <Row>
           {posts.map((post, index) => {
-            // console.log(post)
+            const title = post.title.rendered.replace(/ /g, '-')
             return (
               <Col md="4" key={index}>
-                <Card className={classnames('hover-click', 'hover-card')}>
-                  <CardBlock>
-                    <CardTitle>{renderHTML(post.title.rendered)}</CardTitle>
-                    <CardSubtitle>
-                      <small>{post.date}</small>
-                    </CardSubtitle>
-                    {renderHTML(post.excerpt.rendered)}
-                  </CardBlock>
-                </Card>
+                <Link to={`/post/${post.id}/${title}`} style={{ textDecoration: 'none' }}>
+                  <Card className={classnames('hover-click', 'hover-card')}>
+                    <CardBlock>
+                      <CardTitle>{renderHTML(post.title.rendered)}</CardTitle>
+                      <CardSubtitle>
+                        <small>{post.date}</small>
+                      </CardSubtitle>
+                      {renderHTML(post.excerpt.rendered)}
+                    </CardBlock>
+                  </Card>
+                </Link>
               </Col>)
           })}
         </Row>

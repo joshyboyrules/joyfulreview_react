@@ -8,6 +8,7 @@ import { Switch, Route } from 'react-router-dom'
 import Home from './components/Home'
 import PageNotFound from './components/PageNotFound'
 import About from './components/About'
+import Post from './components/Post'
 
 class App extends Component {
   render () {
@@ -28,6 +29,7 @@ class App extends Component {
                 <Switch>
                   <Route exact path="/" component={Home} />
                   <Route exact path="/about" component={About} />
+                  <Route path="/post/:id/:title" component={Post} />
                   <Route component={PageNotFound} />
                 </Switch>
               </Col>

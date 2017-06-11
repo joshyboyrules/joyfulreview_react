@@ -6,7 +6,7 @@ import renderHTML from 'react-render-html'
 import {
   Row, Col, Container
 } from 'reactstrap'
-import ReactDisqusThread from 'react-disqus-thread'
+// import ReactDisqusThread from 'react-disqus-thread'
 
 const addPostState = compose(
   withState('post', 'setPost', {}),
@@ -20,10 +20,8 @@ const enhance = compose(
   addPostState,
   lifecycle({
     componentWillMount: function () {
-      console.log(this.props.location)
       const id = this.props.match.params.id
       getHelper(`/posts/${id}`).then((response) => {
-        console.log(response.data)
         this.props.updatePost(response.data)
       })
     }
@@ -45,11 +43,11 @@ const Post = enhance((props) => {
                 {renderHTML(post.content.rendered)}
               </div>
             </Col>
-            <Col md="12" sm="12">
-              <ReactDisqusThread shortname="joyfulreview"
-                                 identifier={`${post.id}`}
-                                 url={`https://www.joyfulreview.com${props.location.pathname}`}/>
-            </Col>
+            {/*<Col md="12" sm="12">*/}
+              {/*<ReactDisqusThread shortname="joyfulreview"*/}
+                                 {/*identifier={`${post.id}`}*/}
+                                 {/*url={`https://www.joyfulreview.com${props.location.pathname}`}/>*/}
+            {/*</Col>*/}
           </Row>
         </Container>
       </div>

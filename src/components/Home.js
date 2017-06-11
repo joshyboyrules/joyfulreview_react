@@ -71,7 +71,7 @@ const Posts = enhancePosts((props) => {
           {posts.map((post, index) => {
             const title = post.title.rendered.replace(/ /g, '-')
             return (
-              <Col md="4" key={index}>
+              <Col key={index} md="4" xs="12">
                 <Link to={`/post/${post.id}/${title}`} style={{ textDecoration: 'none' }}>
                   <Card className={classnames('hover-click', 'hover-card')}>
                     <CardBlock>
@@ -83,6 +83,7 @@ const Posts = enhancePosts((props) => {
                     </CardBlock>
                   </Card>
                 </Link>
+                <br className="hidden-md-up"/>
               </Col>)
           })}
         </Row>

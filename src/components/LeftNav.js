@@ -7,9 +7,6 @@ const LeftNav = (props) => {
     <div>
       <Nav vertical>
         <NavItem>
-          <Link to="/" className="nav-link">Home</Link>
-        </NavItem>
-        <NavItem>
           <Link to="/about" className="nav-link">About</Link>
         </NavItem>
       </Nav>

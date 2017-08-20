@@ -15,7 +15,7 @@ class App extends Component {
       <div>
         <Link to="/" style={{ textDecoration: 'none' }}>
           <div className={classnames('App', 'App-header')}>
-            <h2>[JR] JoyfulReview222</h2>
+            <h2>[JR] JoyfulReview-- last one</h2>
           </div>
         </Link>
         <br/>

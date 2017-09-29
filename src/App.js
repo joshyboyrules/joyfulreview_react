@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './App.css'
-import { Container, Row, Col } from 'reactstrap'
 import LeftNav from './components/LeftNav'
 import classnames from 'classnames'
 import { Switch, Route, Link } from 'react-router-dom'
@@ -15,26 +14,26 @@ class App extends Component {
       <div>
         <Link to="/" style={{ textDecoration: 'none' }}>
           <div className={classnames('App', 'App-header')}>
-            <h2>[JR] JoyfulReview-- last one</h2>
+            <h2>[JR] JoyfulReview</h2>
           </div>
         </Link>
         <br/>
         <div>
-          <Container>
-            <Row>
-              <Col md="2" xs="12">
+          <div className={'container'}>
+            <div className={'row'}>
+              <div className={'col-md-2 col-sm-12'}>
                 <LeftNav/>
-              </Col>
-              <Col md="10" xs="12">
+              </div>
+              <div className={'col-md-10 col-sm-12'}>
                 <Switch>
                   <Route exact path="/" component={Home}/>
                   <Route exact path="/about" component={About}/>
                   <Route path="/post/:id/:title" component={Post}/>
                   <Route component={PageNotFound}/>
                 </Switch>
-              </Col>
-            </Row>
-          </Container>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )

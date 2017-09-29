@@ -3,9 +3,6 @@ import { compose, setDisplayName, lifecycle, withState, withProps } from 'recomp
 import { getHelper } from '../utils/requestHelper'
 import isEmpty from 'lodash/isEmpty'
 import renderHTML from 'react-render-html'
-import {
-  Row, Col, Container
-} from 'reactstrap'
 // import ReactDisqusThread from 'react-disqus-thread'
 
 const addPostState = compose(
@@ -35,21 +32,21 @@ const Post = enhance((props) => {
   } else {
     return (
       <div>
-        <Container>
-          <Row>
-            <Col md="12" sm="12">
+        <div className={'container'}>
+          <div className={'row'}>
+            <div className={'col-md-12'}>
               <h1>{renderHTML(post.title.rendered)}</h1>
               <div>
                 {renderHTML(post.content.rendered)}
               </div>
-            </Col>
+            </div>
             {/*<Col md="12" sm="12">*/}
               {/*<ReactDisqusThread shortname="joyfulreview"*/}
                                  {/*identifier={`${post.id}`}*/}
                                  {/*url={`https://www.joyfulreview.com${props.location.pathname}`}/>*/}
             {/*</Col>*/}
-          </Row>
-        </Container>
+          </div>
+        </div>
       </div>
     )
   }

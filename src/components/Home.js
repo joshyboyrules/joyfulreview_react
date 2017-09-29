@@ -1,14 +1,11 @@
 import React from 'react'
 import { compose, setDisplayName, lifecycle, withState, withProps } from 'recompose'
 import { getHelper } from '../utils/requestHelper'
-import {
-  Card, CardBlock,
-  CardTitle, CardSubtitle, Row, Col, Container
-} from 'reactstrap'
 import renderHTML from 'react-render-html'
 import classnames from 'classnames'
 import debounce from 'lodash/debounce'
 import { Link } from 'react-router-dom'
+import Time from 'react-time'
 
 const addPostsState = compose(
   withState('posts', 'setPosts', []),
@@ -53,9 +50,9 @@ const Posts = enhancePosts((props) => {
   const { posts } = props
   return (
     <div>
-      <Container>
-        <Row>
-          <Col md="12">
+      <div className={'container'}>
+        <div className={'row'}>
+          <div className={'col-md-12'}>
             <input className="form-control" placeholder="search something..."
                    value={props.searchValue}
                    onChange={(e) => {
@@ -65,29 +62,35 @@ const Posts = enhancePosts((props) => {
                    }}
             />
             <br/>
-          </Col>
-        </Row>
-        <Row>
+          </div>
+        </div>
+        <div className={'row'}>
           {posts.map((post, index) => {
             const title = post.title.rendered.replace(/ /g, '-')
+            console.log(post)
             return (
-              <Col key={index} md="4" xs="12">
-                <Link to={`/post/${post.id}/${title}`} style={{ textDecoration: 'none' }}>
-                  <Card className={classnames('hover-click', 'hover-card')}>
-                    <CardBlock>
-                      <CardTitle>{renderHTML(post.title.rendered)}</CardTitle>
-                      <CardSubtitle>
-                        <small>{post.date}</small>
-                      </CardSubtitle>
+              <Link
+                to={`/post/${post.id}/${title}`}
+                style={{ textDecoration: 'none', color: 'black' }}
+                key={index}
+                className={'col-md-4'}>
+                <div className="card" style={{ width: '100%' }}>
+                  <div className="card-body">
+                    <h4 className="card-title">{post.title.rendered}</h4>
+                    <h6 className={'text-muted'}>
+                      <Time value={post.date_gmt} format="MM/DD/YYYY"/>
+                    </h6>
+                    <span className="card-text">
                       {renderHTML(post.excerpt.rendered)}
-                    </CardBlock>
-                  </Card>
-                </Link>
+                      </span>
+                    {/*<a href="#" className="btn btn-primary">Go somewhere</a>*/}
+                  </div>
+                </div>
                 <br className="hidden-md-up"/>
-              </Col>)
+              </Link>)
           })}
-        </Row>
-      </Container>
+        </div>
+      </div>
     </div>
   )
 })

@@ -1,43 +1,93 @@
 import React, { Component } from 'react'
 import './App.css'
-import LeftNav from './components/LeftNav'
 import classnames from 'classnames'
 import { Switch, Route, Link } from 'react-router-dom'
 import Home from './components/Home'
 import PageNotFound from './components/PageNotFound'
 import About from './components/About'
 import Post from './components/Post'
+import RightNav from './components/RightNav'
+import RightNavExample from './components/RightNavExample'
+import { compose, setDisplayName, lifecycle, withState, withProps } from 'recompose'
+import MediaQuery from 'react-responsive'
 
-class App extends Component {
-  render () {
-    return (
-      <div>
-        <Link to="/" style={{ textDecoration: 'none' }}>
-          <div className={classnames('App', 'App-header')}>
-            <h2>[JR] JoyfulReview</h2>
-          </div>
-        </Link>
-        <br/>
-        <div>
-          <div className={'container'}>
-            <div className={'row'}>
-              <div className={'col-md-2 col-sm-12'}>
-                <LeftNav/>
-              </div>
-              <div className={'col-md-10 col-sm-12'}>
-                <Switch>
-                  <Route exact path="/" component={Home}/>
-                  <Route exact path="/about" component={About}/>
-                  <Route path="/post/:id/:title" component={Post}/>
-                  <Route component={PageNotFound}/>
-                </Switch>
+const addOpenCloseState = compose(
+  withState('open', 'setOpen', true),
+  withProps(({ setOpen }) => ({
+    handleDrawerOpen: () => setOpen(() => true),
+    handleDrawerClose: () => setOpen(() => false)
+  }))
+)
+const enhance = compose(
+  setDisplayName('App'),
+  addOpenCloseState,
+  lifecycle({
+    componentWillMount: function () {
+      if (window.innerWidth <= 720) {
+        this.props.handleDrawerClose()
+      }
+    }
+  })
+)
+const App = enhance((props) => {
+  return (
+    <div className={classnames({ 'drawer-open': props.open })}>
+      <div className={'header'} style={{ minHeight: '4rem' }}>
+        <div className={'container'} style={{ minHeight: '4rem' }}>
+          <div className={'row align-items-center'} style={{ minHeight: '4rem' }}>
+            <div className={'col-12'}>
+              <div className="row">
+                <div className="col-8 align-self-center">
+                  <Link to="/" style={{ color: 'rgba(0, 0, 0, 0.54)', textDecoration: 'none' }}>
+                    <h2 className={'custom-header'}>Joyful Review</h2>
+                  </Link>
+                </div>
+                <div className={'col-3 align-self-center d-none d-sm-none d-md-block'}>
+                  <span>Directory</span>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <span>About</span>
+                </div>
+                <MediaQuery minWidth={720}>
+                  <div className={'col-1 align-self-center'}>
+                    <RightNav
+                      open={props.open}
+                      handleDrawerOpen={props.handleDrawerOpen}
+                      handleDrawerClose={props.handleDrawerClose}
+                      type={'persistent'}
+                    />
+                  </div>
+                </MediaQuery>
+                <MediaQuery maxWidth={719}>
+                  <div className={'col-1 align-self-center'}>
+                    <RightNav
+                      open={props.open}
+                      handleDrawerOpen={props.handleDrawerOpen}
+                      handleDrawerClose={props.handleDrawerClose}
+                      type={'transparent'}
+                    />
+                  </div>
+                </MediaQuery>
               </div>
             </div>
           </div>
         </div>
       </div>
-    )
-  }
-}
+      <div>
+        <div className={'container'}>
+          <div className={'row'}>
+            <div className={'col-12'}>
+              <Switch>
+                <Route exact path="/" component={Home}/>
+                <Route exact path="/about" component={About}/>
+                <Route path="/post/:id/:title" component={Post}/>
+                <Route component={PageNotFound}/>
+              </Switch>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+})
 
 export default App

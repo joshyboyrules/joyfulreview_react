@@ -6,6 +6,7 @@ import classnames from 'classnames'
 import debounce from 'lodash/debounce'
 import { Link } from 'react-router-dom'
 import Time from 'react-time'
+import Divider from 'material-ui/Divider'
 
 const addPostsState = compose(
   withState('posts', 'setPosts', []),
@@ -49,48 +50,26 @@ const searchPosts = debounce((searchValue, updatePosts) => {
 const Posts = enhancePosts((props) => {
   const { posts } = props
   return (
-    <div>
-      <div className={'container'}>
-        <div className={'row'}>
-          <div className={'col-md-12'}>
-            <input className="form-control" placeholder="search something..."
-                   value={props.searchValue}
-                   onChange={(e) => {
-                     const searchValue = e.target.value
-                     props.updateSearchValue(searchValue)
-                     searchPosts(searchValue, props.updatePosts)
-                   }}
-            />
-            <br/>
-          </div>
-        </div>
-        <div className={'row'}>
-          {posts.map((post, index) => {
-            const title = post.title.rendered.replace(/ /g, '-')
-            console.log(post)
-            return (
-              <Link
-                to={`/post/${post.id}/${title}`}
-                style={{ textDecoration: 'none', color: 'black' }}
-                key={index}
-                className={'col-md-4'}>
-                <div className="card" style={{ width: '100%' }}>
-                  <div className="card-body">
-                    <h4 className="card-title">{post.title.rendered}</h4>
-                    <h6 className={'text-muted'}>
-                      <Time value={post.date_gmt} format="MM/DD/YYYY"/>
-                    </h6>
-                    <span className="card-text">
-                      {renderHTML(post.excerpt.rendered)}
-                      </span>
-                    {/*<a href="#" className="btn btn-primary">Go somewhere</a>*/}
-                  </div>
-                </div>
-                <br className="hidden-md-up"/>
-              </Link>)
-          })}
-        </div>
-      </div>
+    <div className={'row'}>
+      {posts.map((post, index) => {
+        const title = post.title.rendered.replace(/ /g, '-')
+        return (
+          <Link
+            to={`/post/${post.id}/${title}`}
+            style={{ textDecoration: 'none', color: 'black' }}
+            key={index}
+            className={'col-12 col-md-4'}>
+            <div style={{ width: '100%', padding: '15px' }}>
+              <Divider/><br/>
+              <h4 className="lora-font">{post.title.rendered}</h4>
+              {/*<h6 className={'text-muted roboto-font'}>*/}
+                {/*<Time value={post.date_gmt} format="MM/DD/YYYY"/>*/}
+              {/*</h6>*/}
+              <span>{renderHTML(post.excerpt.rendered)}</span>
+            </div>
+            <br className={'d-block d-sm-block d-md-none'}/>
+          </Link>)
+      })}
     </div>
   )
 })

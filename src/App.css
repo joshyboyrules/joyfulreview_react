@@ -1,17 +1,11 @@
-.App {
-  text-align: center;
-}
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 80px;
-  padding: 20px;
-  color: white;
+.header {
+  background-color: #fff;
+  /*padding: 20px;*/
+  margin-bottom: 20px;
+  /*border-color: rgba(0, 0, 0, 0.14);*/
+  color: rgba(0, 0, 0, 0.54);
+  border-bottom: 1px solid lightgrey;
 }
 
 .vcenter {
@@ -20,23 +14,31 @@
   float: none;
 }
 
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .hover-click {
   cursor: pointer
 }
 
-.hover-card {
-
+@media screen and (min-width: 720px) {
+  .drawer-open {
+    margin-right: 260px;
+  }
 }
+
+.custom-header {
+  font-family: 'Permanent Marker', cursive;
+}
+
+.lora-font {
+  font-family: 'Lora', serif;
+}
+
+span {
+  font-family: 'Roboto', sans-serif;
+}
+
+.roboto-font {
+  font-family: 'Roboto', sans-serif;
+}
+
+
+

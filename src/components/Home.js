@@ -1,54 +1,17 @@
 import React from 'react'
 import { compose, setDisplayName, lifecycle, withState, withProps } from 'recompose'
-import { getHelper } from '../utils/requestHelper'
 import renderHTML from 'react-render-html'
-import classnames from 'classnames'
 import debounce from 'lodash/debounce'
 import { Link } from 'react-router-dom'
 import Time from 'react-time'
 import Divider from 'material-ui/Divider'
 
-const addPostsState = compose(
-  withState('posts', 'setPosts', []),
-  withProps(({ setPosts }) => ({
-    updatePosts: (posts) => setPosts(() => posts)
-  }))
-)
-
-const addSearchState = compose(
-  withState('searchValue', 'setSearchValue', []),
-  withProps(({ setSearchValue }) => ({
-    updateSearchValue: (searchValue) => setSearchValue(() => searchValue)
-  }))
-)
-
 const enhancePosts = compose(
-  addPostsState,
-  setDisplayName('Posts'),
-  lifecycle({
-    componentWillMount: function () {
-      getHelper(`/posts`).then((response) => {
-        this.props.updatePosts(response.data)
-      })
-    }
-  }),
-  addSearchState
+  setDisplayName('Posts')
 )
-
-const searchPosts = debounce((searchValue, updatePosts) => {
-  if (searchValue) {
-    getHelper(`/posts?search=${searchValue}`).then((response) => {
-      updatePosts(response.data)
-    })
-  } else {
-    getHelper(`/posts`).then((response) => {
-      updatePosts(response.data)
-    })
-  }
-}, 1000)
 
 const Posts = enhancePosts((props) => {
-  const { posts } = props
+  const posts = props.posts
   return (
     <div className={'row'}>
       {posts.map((post, index) => {
@@ -75,11 +38,7 @@ const Posts = enhancePosts((props) => {
 })
 
 const Home = (props) => {
-  return (
-    <div>
-      <Posts/>
-    </div>
-  )
+  return <Posts {...props}/>
 }
 
 Home.propTypes = {}

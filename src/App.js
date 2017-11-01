@@ -1,37 +1,60 @@
-import React, { Component } from 'react'
-import './App.css'
+import React from 'react'
 import classnames from 'classnames'
 import { Switch, Route, Link } from 'react-router-dom'
+import { compose, setDisplayName, lifecycle, withState, withProps } from 'recompose'
+import MediaQuery from 'react-responsive'
+import debounce from 'lodash/debounce'
+
+import './App.css'
 import Home from './components/Home'
 import PageNotFound from './components/PageNotFound'
 import About from './components/About'
 import Post from './components/Post'
 import RightNav from './components/RightNav'
-import RightNavExample from './components/RightNavExample'
-import { compose, setDisplayName, lifecycle, withState, withProps } from 'recompose'
-import MediaQuery from 'react-responsive'
+import { getHelper } from './utils/requestHelper'
 
 const addOpenCloseState = compose(
-  withState('open', 'setOpen', true),
+  withState('drawerOpen', 'setOpen', true),
   withProps(({ setOpen }) => ({
     handleDrawerOpen: () => setOpen(() => true),
     handleDrawerClose: () => setOpen(() => false)
   }))
 )
+
+const addPostsState = compose(
+  withState('posts', 'setPosts', []),
+  withProps(({ setPosts }) => ({
+    updatePosts: (posts) => setPosts(() => posts)
+  }))
+)
+
+const addSearchState = compose(
+  withState('searchValue', 'setSearchValue', []),
+  withProps(({ setSearchValue }) => ({
+    updateSearchValue: (searchValue) => setSearchValue(() => searchValue)
+  }))
+)
+
 const enhance = compose(
   setDisplayName('App'),
   addOpenCloseState,
+  addPostsState,
+  addSearchState,
   lifecycle({
     componentWillMount: function () {
       if (window.innerWidth <= 720) {
         this.props.handleDrawerClose()
       }
+      getHelper(`/posts`).then((response) => {
+        this.props.updatePosts(response.data)
+      })
     }
   })
 )
 const App = enhance((props) => {
+  const { posts } = props
   return (
-    <div className={classnames({ 'drawer-open': props.open })}>
+    <div className={classnames({ 'drawer-open': props.drawerOpen })}>
       <div className={'header'} style={{ minHeight: '4rem' }}>
         <div className={'container'} style={{ minHeight: '4rem' }}>
           <div className={'row align-items-center'} style={{ minHeight: '4rem' }}>
@@ -50,20 +73,26 @@ const App = enhance((props) => {
                 <MediaQuery minWidth={720}>
                   <div className={'col-1 align-self-center'}>
                     <RightNav
-                      open={props.open}
+                      open={props.drawerOpen}
                       handleDrawerOpen={props.handleDrawerOpen}
                       handleDrawerClose={props.handleDrawerClose}
                       type={'persistent'}
+                      searchValue={props.searchValue}
+                      updateSearchValue={props.updateSearchValue}
+                      updatePosts={props.updatePosts}
                     />
                   </div>
                 </MediaQuery>
                 <MediaQuery maxWidth={719}>
                   <div className={'col-1 align-self-center'}>
                     <RightNav
-                      open={props.open}
+                      open={props.drawerOpen}
                       handleDrawerOpen={props.handleDrawerOpen}
                       handleDrawerClose={props.handleDrawerClose}
                       type={'transparent'}
+                      searchValue={props.searchValue}
+                      updateSearchValue={props.updateSearchValue}
+                      updatePosts={props.updatePosts}
                     />
                   </div>
                 </MediaQuery>
@@ -77,7 +106,7 @@ const App = enhance((props) => {
           <div className={'row'}>
             <div className={'col-12'}>
               <Switch>
-                <Route exact path="/" component={Home}/>
+                <Route exact path="/" component={() => <Home posts={posts}/>}/>
                 <Route exact path="/about" component={About}/>
                 <Route path="/post/:id/:title" component={Post}/>
                 <Route component={PageNotFound}/>

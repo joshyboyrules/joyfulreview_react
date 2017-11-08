@@ -1,3 +1,7 @@
+html * {
+  font-family: 'Inconsolata', monospace !important;
+}
+
 
 .header {
   background-color: #fff;
@@ -25,20 +29,12 @@
 }
 
 .custom-header {
-  font-family: 'Permanent Marker', cursive;
+  font-weight: 700;
 }
 
-.lora-font {
-  font-family: 'Lora', serif;
+h5 {
+  display: inline-block;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 1px solid lightgrey;
 }
-
-span {
-  font-family: 'Roboto', sans-serif;
-}
-
-.roboto-font {
-  font-family: 'Roboto', sans-serif;
-}
-
-
-

@@ -4,6 +4,8 @@ import { getHelper } from '../utils/requestHelper'
 import isEmpty from 'lodash/isEmpty'
 import renderHTML from 'react-render-html'
 // import ReactDisqusThread from 'react-disqus-thread'
+import Meta from './Meta'
+import { convertHtmlToString } from '../utils/utils'
 
 const addPostState = compose(
   withState('post', 'setPost', {}),
@@ -27,25 +29,27 @@ const enhance = compose(
 
 const Post = enhance((props) => {
   const { post } = props
+
   if (isEmpty(post)) {
     return <div/>
   } else {
+    const title = post.title.rendered.replace(/&nbsp;/g, ' ')
+    const excerpt = convertHtmlToString(post.excerpt.rendered)
     return (
-      <div>
-        <div className={'container'}>
-          <div className={'row'}>
-            <div className={'col-md-12'}>
-              <h1>{renderHTML(post.title.rendered)}</h1>
-              <div>
-                {renderHTML(post.content.rendered)}
-              </div>
+      <div className={'container'}>
+        <Meta title={title} description={excerpt}/>
+        <div className={'row'}>
+          <div className={'col-md-12'}>
+            <h1>{renderHTML(post.title.rendered)}</h1>
+            <div>
+              {renderHTML(post.content.rendered)}
             </div>
-            {/*<Col md="12" sm="12">*/}
-              {/*<ReactDisqusThread shortname="joyfulreview"*/}
-                                 {/*identifier={`${post.id}`}*/}
-                                 {/*url={`https://www.joyfulreview.com${props.location.pathname}`}/>*/}
-            {/*</Col>*/}
           </div>
+          {/*<div className="col-md-12">*/}
+          {/*<ReactDisqusThread shortname="joyfulreview"*/}
+          {/*identifier={`${post.id}`}*/}
+          {/*url={`https://www.joyfulreview.com${props.location.pathname}`}/>*/}
+          {/*</div>*/}
         </div>
       </div>
     )

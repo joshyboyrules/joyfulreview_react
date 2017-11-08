@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Drawer from 'material-ui/Drawer'
 import ChevronRightIcon from 'material-ui-icons/ChevronRight'
 import IconButton from 'material-ui/IconButton'

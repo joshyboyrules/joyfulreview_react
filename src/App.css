@@ -2,7 +2,6 @@ html * {
   font-family: 'Inconsolata', monospace !important;
 }
 
-
 .header {
   background-color: #fff;
   /*padding: 20px;*/
@@ -10,6 +9,14 @@ html * {
   /*border-color: rgba(0, 0, 0, 0.14);*/
   color: rgba(0, 0, 0, 0.54);
   border-bottom: 1px solid lightgrey;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.content {
+  position: relative;
 }
 
 .vcenter {
@@ -21,6 +28,15 @@ html * {
 .hover-click {
   cursor: pointer
 }
+
+.twitter-click:hover {
+  color: deepskyblue;
+}
+
+.instagram-click:hover {
+  color: mediumvioletred;
+}
+
 
 @media screen and (min-width: 720px) {
   .drawer-open {
@@ -37,4 +53,12 @@ h5 {
   padding-left: 10px;
   padding-right: 10px;
   border: 1px solid lightgrey;
+}
+
+.max-container-width {
+  max-width: 1440px;
+}
+
+img.desaturate {
+  filter: grayscale(100%);
 }

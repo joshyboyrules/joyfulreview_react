@@ -18,6 +18,8 @@ const Meta = (data) => {
   const width = data.image && (data.width || 1200)
   const height = data.image && (data.height || 630)
 
+  const ogTitle = title.replace('| Joyful Review/', '')
+
   return (
     <Helmet>
       <html lang={lang}/>
@@ -28,7 +30,7 @@ const Meta = (data) => {
       {image ? <meta itemprop='image' content={image}/> : null}
 
       <meta property='og:site_name' content='...'/>
-      <meta property='og:title' content={title}/>
+      <meta property='og:title' content={ogTitle}/>
       {description ? <meta property='og:description' content={description}/> : null}
       {canonical ? <meta property='og:url' content={canonical}/> : null}
       <meta property='og:locale' content={locales[ lang ]}/>

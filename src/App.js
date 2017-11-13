@@ -96,7 +96,7 @@ const enhanceHeader = compose(
       const locationPathName = this.props.location.pathname
       const onHomePageBoolean = (locationPathName === '/')
       if (!onHomePageBoolean) {
-        console.log('header drawer close')
+        // console.log('header drawer close')
         this.props.handleDrawerClose()
       }
     },
@@ -105,10 +105,10 @@ const enhanceHeader = compose(
         const onHomePageBoolean = isOnHomePage(this.props.location)
         // console.log('location path name', locationPathName)
         if (!onHomePageBoolean) {
-          console.log('header drawer close')
+          // console.log('header drawer close')
           this.props.handleDrawerClose()
         } else if (onHomePageBoolean && !this.props.drawerOpen) {
-          console.log('header drawer open')
+          // console.log('header drawer open')
           this.props.handleDrawerOpen()
         }
       }

@@ -1,14 +1,16 @@
 import React from 'react'
-import { compose, setDisplayName, lifecycle, withState } from 'recompose'
-import { getHelper } from '../utils/requestHelper'
+import { compose, setDisplayName, lifecycle, withState, withProps } from 'recompose'
 import isEmpty from 'lodash/isEmpty'
 import renderHTML from 'react-render-html'
-// import ReactDisqusThread from 'react-disqus-thread'
 import Meta from './Meta'
 import Time from 'react-time'
 import { Twitter, Instagram } from 'react-feather'
-
+import values from 'lodash/values'
+import isObject from 'lodash/isObject'
+import { getHelper } from '../utils/requestHelper'
+import OutsideLink from './common/OutsideLink'
 import { convertHtmlToString } from '../utils/utils'
+import YouTubeModal from './common/YouTubeModal'
 
 function stripHtml (string) {
   let string2 = string.replace(/<(?:.|\n)*?>/gm, '') //strip html
@@ -18,10 +20,8 @@ function stripHtml (string) {
 
 function getJsonFromTag (tagString) {
   // const renderedHtml = renderHTML(html)
-  const element = document.getElementById(tagString)
-  let json = null
-  if (element) {
-    json = Object.assign({}, JSON.parse(stripHtml(element.innerHTML)))
+
+  const jsonHelper = (json) => {
     const baseFilePrefix = 'https://'
 
     Object.keys(json).forEach(function (key) {
@@ -30,13 +30,33 @@ function getJsonFromTag (tagString) {
       }
     })
   }
+  const element = document.getElementById(tagString)
+  let json = null
+  if (element) {
+    json = Object.assign({}, JSON.parse(stripHtml(element.innerHTML)))
+    jsonHelper(json)
+  }
+
+  if (tagString === 'buy' || tagString === 'other-reviews' || tagString === 'youtube') {
+    if (json) {
+      json = values(json)
+      json.forEach(obj => {
+        if (isObject(obj)) {
+          jsonHelper(obj)
+        }
+      })
+    }
+  }
+
   return json
 }
 
 const addPostState = compose(
   withState('post', 'setPost', null),
   withState('author', 'setAuthor', null),
-  withState('buy', 'setBuy', null)
+  withState('buy', 'setBuy', null),
+  withState('otherReviews', 'setOtherReviews', null),
+  withState('youtube', 'setYouTube', null)
 )
 
 const enhance = compose(
@@ -51,8 +71,10 @@ const enhance = compose(
         this.setState(Object.assign({}, this.state, { post }))
         const author = getJsonFromTag('author')
         const buy = getJsonFromTag('buy')
+        const otherReviews = getJsonFromTag('other-reviews')
+        const youtube = getJsonFromTag('youtube')
 
-        this.setState(Object.assign({}, this.state, { author, buy }))
+        this.setState(Object.assign({}, this.state, { author, buy, otherReviews, youtube }))
       })
     },
     componentWillUnmount: function () {
@@ -62,7 +84,7 @@ const enhance = compose(
 )
 
 const Post = enhance((props) => {
-  const { post, author, buy } = props
+  const { post, author, buy, otherReviews, youtube } = props
 
   if (isEmpty(post)) {
     return <div/>
@@ -72,12 +94,11 @@ const Post = enhance((props) => {
     const featuredImageUrl = post.featured_media_url
     return (
       <div className={'container-fluid max-container-width'}>
-        <Meta title={`${title} | Joyful Review`} description={excerpt}/>
+        <Meta title={`${title} | Joyful Review`} description={excerpt} image={featuredImageUrl}/>
         <div className={'row'}>
           <div className="col-md-3">
             <hr/>
             <small>Title</small>
-            {featuredImageUrl && <img src={featuredImageUrl} width={'100%'} className={'rounded'} alt={title}/>}
             <h4>{renderHTML(post.title.rendered)}</h4>
             <h6 className={'text-muted'}>
               Published: <Time value={post.date_gmt} format="MM/DD/YYYY"/>
@@ -124,11 +145,34 @@ const Post = enhance((props) => {
                 </div>
               </div>
             </div>}
-            {buy && <div>
+            {Array.isArray(buy) && buy.length > 0 && <div>
               <hr/>
               <small>Places to Buy</small>
               <br/>
-              <a href={buy.link} target={'_blank'}>Link</a>
+              {buy.map((obj, index) => <div key={index}>
+                <OutsideLink url={obj.link} text={obj.title}/>
+                {/*<a href={obj.link} target={'_blank'}>{obj.title}</a>*/}
+              </div>)}
+            </div>}
+            {Array.isArray(otherReviews) && otherReviews.length > 0 && <div>
+              <hr/>
+              <small>Other Reviews</small>
+              <br/>
+              {otherReviews.map((obj, index) => <div key={index}>
+                <OutsideLink url={obj.link} text={obj.title}/>
+                &nbsp;
+                {obj.score && <span>{`(${obj.score})`}</span>}
+              </div>)}
+            </div>}
+            {Array.isArray(youtube) && youtube.length > 0 && <div>
+              <hr/>
+              <small>YouTube</small>
+              <br/>
+              {youtube.map((obj, index) => <YouTubeModal
+                videoId={obj.youtube_video_id}
+                title={obj.title}
+                key={index}
+              />)}
             </div>}
           </div>
           {/*<div className="col-md-12">*/}

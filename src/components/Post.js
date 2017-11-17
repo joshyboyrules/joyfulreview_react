@@ -11,10 +11,11 @@ import { getHelper } from '../utils/requestHelper'
 import OutsideLink from './common/OutsideLink'
 import { convertHtmlToString } from '../utils/utils'
 import YouTubeModal from './common/YouTubeModal'
+import draftContent from '../articles/zojirushi_article'
 
 function stripHtml (string) {
   let string2 = string.replace(/<(?:.|\n)*?>/gm, '') //strip html
-  string2 = string2.replace(/“|”/g, '"') // replace bad quotation marks
+  string2 = string2.replace(/“|”|″/g, '"') // replace bad quotation marks
   return string2
 }
 
@@ -22,11 +23,11 @@ function getJsonFromTag (tagString) {
   // const renderedHtml = renderHTML(html)
 
   const jsonHelper = (json) => {
-    const baseFilePrefix = 'https://'
+    const prefix = 'https://'
 
     Object.keys(json).forEach(function (key) {
       if (key === 'image' || key === 'link') {
-        json[ key ] = baseFilePrefix + json[ key ]
+        json[ key ] = prefix + json[ key ]
       }
     })
   }
@@ -64,16 +65,28 @@ const enhance = compose(
   addPostState,
   lifecycle({
     componentDidMount: function () {
-      const id = this.props.match.params.id
-      getHelper(`/posts/${id}`).then((response) => {
-        const post = response.data
-        // this.props.updatePost(response.data)
-        this.setState(Object.assign({}, this.state, { post }))
+
+      const firstPromise = new Promise((resolve, reject) => {
+        const id = this.props.match.params.id
+        if (id === 'draft') {
+          console.log('post draft mode')
+          const post = { content: { rendered: draftContent }, title: { rendered: 'draft mode' } }
+          this.setState(Object.assign({}, this.state, { post }))
+          resolve()
+        } else {
+          getHelper(`/posts/${id}`).then((response) => {
+            const post = response.data
+            this.setState(Object.assign({}, this.state, { post }))
+            resolve()
+          })
+        }
+      })
+
+      firstPromise.then(() => {
         const author = getJsonFromTag('author')
         const buy = getJsonFromTag('buy')
         const otherReviews = getJsonFromTag('other-reviews')
         const youtube = getJsonFromTag('youtube')
-
         this.setState(Object.assign({}, this.state, { author, buy, otherReviews, youtube }))
       })
     },
@@ -89,8 +102,8 @@ const Post = enhance((props) => {
   if (isEmpty(post)) {
     return <div/>
   } else {
-    const title = post.title.rendered.replace(/&nbsp;/g, ' ')
-    const excerpt = convertHtmlToString(post.excerpt.rendered)
+    const title = post && post.title && post.title.rendered ? post.title.rendered.replace(/&nbsp;/g, ' ') : 'N/A'
+    const excerpt = post && post.excerpt && post.excerpt.rendered ? convertHtmlToString(post.excerpt.rendered) : 'N/A'
     const featuredImageUrl = post.featured_media_url
     return (
       <div className={'container-fluid max-container-width'}>
@@ -101,7 +114,7 @@ const Post = enhance((props) => {
             <small>Title</small>
             <h4>{renderHTML(post.title.rendered)}</h4>
             <h6 className={'text-muted'}>
-              Published: <Time value={post.date_gmt} format="MM/DD/YYYY"/>
+              Published: <Time value={post.date_gmt || new Date()} format="MM/DD/YYYY"/>
             </h6>
           </div>
           <div className={'col-md-6'}>

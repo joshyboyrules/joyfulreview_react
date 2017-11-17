@@ -11,7 +11,8 @@ import { getHelper } from '../utils/requestHelper'
 import OutsideLink from './common/OutsideLink'
 import { convertHtmlToString } from '../utils/utils'
 import YouTubeModal from './common/YouTubeModal'
-import draftContent from '../articles/zojirushi_article'
+
+// import draftContent from '../articles/draft_article'
 
 function stripHtml (string) {
   let string2 = string.replace(/<(?:.|\n)*?>/gm, '') //strip html
@@ -70,7 +71,7 @@ const enhance = compose(
         const id = this.props.match.params.id
         if (id === 'draft') {
           console.log('post draft mode')
-          const post = { content: { rendered: draftContent }, title: { rendered: 'draft mode' } }
+          const post = { content: { rendered: 'draftContent' }, title: { rendered: 'draft mode' } }
           this.setState(Object.assign({}, this.state, { post }))
           resolve()
         } else {
@@ -162,9 +163,12 @@ const Post = enhance((props) => {
               <hr/>
               <small>Places to Buy</small>
               <br/>
-              {buy.map((obj, index) => <div key={index}>
-                <OutsideLink url={obj.link} text={obj.title}/>
-                {/*<a href={obj.link} target={'_blank'}>{obj.title}</a>*/}
+              {buy.map((obj, index) => <div key={index} style={{ paddingTop: '12px' }}>
+                <button
+                  className={'btn btn-blue hover-click'}
+                  onClick={() => {
+                    window.open(obj.link, '_blank')
+                  }}>{obj.title}</button>
               </div>)}
             </div>}
             {Array.isArray(otherReviews) && otherReviews.length > 0 && <div>

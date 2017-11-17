@@ -66,6 +66,7 @@
     "handle-callback-err": 0,
     "block-spacing": 0,
     "no-class-assign": 0,
-    "camelcase": 1
+    "camelcase": 1,
+    "react/jsx-tag-spacing": 0
   }
 }

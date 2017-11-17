@@ -1,9 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const linkStyle = {
-  color: '#007bff'
-}
+const linkStyle = { color: '#007bff' }
 
 const OutsideLink = (props) => {
   const { url, text } = props

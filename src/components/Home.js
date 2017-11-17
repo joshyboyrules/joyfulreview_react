@@ -31,7 +31,7 @@ const Home = enhancePosts((props) => {
       <div className="row">
         {posts.map((post, index) => {
           return <div
-            className={'col-sm-12 col-md-6 col-lg-4 col-xl-3'}
+            className={'col-sm-12 col-md-6 col-lg-6 col-xl-4'}
             key={post.id}
             id={`post-${post.id}`}
           >

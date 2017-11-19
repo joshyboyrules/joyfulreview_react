@@ -1,14 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
-import { compose, setDisplayName, lifecycle, withState, withProps } from 'recompose'
+import { compose, setDisplayName, withState, withProps } from 'recompose'
 import YouTube from 'react-youtube'
 
 import Dialog, {
   DialogContent,
-  DialogContentText,
-  DialogTitle,
-  withMobileDialog
 } from 'material-ui/Dialog'
 
 import Slide from 'material-ui/transitions/Slide'

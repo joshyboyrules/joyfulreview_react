@@ -1,5 +1,5 @@
 import React from 'react'
-import { compose, setDisplayName, lifecycle, withState, withProps } from 'recompose'
+import { compose, setDisplayName, lifecycle } from 'recompose'
 import renderHTML from 'react-render-html'
 import { Link } from 'react-router-dom'
 import Time from 'react-time'
@@ -8,16 +8,10 @@ import Meta from './Meta'
 
 const enhancePosts = compose(
   setDisplayName('Home'),
-  withState('updatedPosts', 'setUpdatedPosts', []),
-  withProps(({ setUpdatedPosts }) => ({
-    setUpdatedPosts: (posts) => setUpdatedPosts(() => posts)
-  })),
   lifecycle({
-    componentWillUnmount: function () {
-      console.log('home unmounted')
-    },
     componentDidMount: function () {
       console.log('home mounted')
+      //TODO call get posts here
     }
   })
 )
@@ -47,11 +41,17 @@ const enhanceIndividualPost = compose(
   setDisplayName('IndividualPost')
 )
 
+const postTitleHelper = (title) => {
+  let string = title.replace(/ |&nbsp;/g, '-')
+  string = string.replace(/:/g, '')
+  string = string.replace(/&#8217;s/g, '')
+  return string
+}
+
 const IndividualPost = enhanceIndividualPost((props) => {
   const { post } = props
 
-  let title = post.title.rendered.replace(/ |&nbsp;/g, '-')
-  title = title.replace(/:/g, '')
+  const title = postTitleHelper(post.title.rendered)
   const featuredImageUrl = post.featured_media_url
 
   return (

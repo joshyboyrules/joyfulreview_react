@@ -1,5 +1,5 @@
 import React from 'react'
-import { compose, setDisplayName, lifecycle, withState, withProps } from 'recompose'
+import { compose, setDisplayName, lifecycle, withState } from 'recompose'
 import isEmpty from 'lodash/isEmpty'
 import renderHTML from 'react-render-html'
 import Meta from './Meta'
@@ -12,7 +12,7 @@ import OutsideLink from './common/OutsideLink'
 import { convertHtmlToString } from '../utils/utils'
 import YouTubeModal from './common/YouTubeModal'
 
-// import draftContent from '../articles/draft_article'
+import draftContent from '../articles/draft_article'
 
 function stripHtml (string) {
   let string2 = string.replace(/<(?:.|\n)*?>/gm, '') //strip html
@@ -71,7 +71,7 @@ const enhance = compose(
         const id = this.props.match.params.id
         if (id === 'draft') {
           console.log('post draft mode')
-          const post = { content: { rendered: 'draftContent' }, title: { rendered: 'draft mode' } }
+          const post = { content: { rendered: draftContent }, title: { rendered: 'draft mode' } }
           this.setState(Object.assign({}, this.state, { post }))
           resolve()
         } else {

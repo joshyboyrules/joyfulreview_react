@@ -1,5 +1,6 @@
 import React from 'react'
 import Helmet from 'react-helmet'
+import renderHTML from 'react-render-html'
 // import { basePath } from './Config.js'
 
 const basePath = 'https://www.joyfulreview.com/'
@@ -10,7 +11,7 @@ const locales = {
 
 const Meta = (data) => {
   const lang = data.lang || 'en'
-  const title = data.title
+  const title = renderHTML(data.title)
   const description = data.description
   const image = data.image !== undefined && `${basePath}${data.image}`
   const canonical = data.canonical !== undefined && `${basePath}${data.canonical}`

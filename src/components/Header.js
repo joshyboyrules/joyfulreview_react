@@ -4,7 +4,7 @@ import { Link, withRouter } from 'react-router-dom'
 import { compose, setDisplayName, lifecycle } from 'recompose'
 import MediaQuery from 'react-responsive'
 import classnames from 'classnames'
-import { Search } from 'react-feather'
+import { Search, Feather } from 'react-feather'
 
 import RightNav from './RightNav'
 
@@ -48,7 +48,14 @@ const Header = withRouter(enhanceHeader((props) => {
             <div className="row">
               <div className="col-8 align-self-center">
                 <Link to="/" style={{ color: 'rgba(0, 0, 0, 0.54)', textDecoration: 'none' }}>
-                  <h1 className={'custom-header'}>Joyful Review</h1>
+                  <h1 className={'custom-header'}>
+                    <img
+                      src={'https://joyfulreview.files.wordpress.com/2017/11/joy_logo.png'}
+                      height={36}
+                      style={{ marginTop: '-5px', paddingRight: '5px', paddingLeft: '15px' }}
+                    />
+                    joyfulreview
+                  </h1>
                 </Link>
               </div>
               {/*<div className={'col-3 align-self-center d-none d-sm-none d-md-block'}>*/}
@@ -90,7 +97,7 @@ const Header = withRouter(enhanceHeader((props) => {
               {onHomePageBoolean && <MediaQuery minWidth={720}>
                 <div className={'col-1 align-self-center'}>
                   <RightNav {...props}
-                    type={'persistent'}
+                            type={'persistent'}
                   />
                 </div>
               </MediaQuery>}

@@ -4,7 +4,7 @@ import { Link, withRouter } from 'react-router-dom'
 import { compose, setDisplayName, lifecycle } from 'recompose'
 import MediaQuery from 'react-responsive'
 import classnames from 'classnames'
-import { Search, Feather } from 'react-feather'
+import { Search } from 'react-feather'
 
 import RightNav from './RightNav'
 
@@ -50,6 +50,7 @@ const Header = withRouter(enhanceHeader((props) => {
                 <Link to="/" style={{ color: 'rgba(0, 0, 0, 0.54)', textDecoration: 'none' }}>
                   <h1 className={'custom-header'}>
                     <img
+                      alt={'feather icon'}
                       src={'https://joyfulreview.files.wordpress.com/2017/11/joy_logo.png'}
                       height={36}
                       style={{ marginTop: '-5px', paddingRight: '5px', paddingLeft: '15px' }}

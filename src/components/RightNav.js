@@ -101,6 +101,7 @@ const RightNav = (props) => {
                       <Checkbox
                         value="electronics"
                         onChange={(e, boolean) => categoryMethodHelper(e.target.value, boolean, props)}
+                        checked={props.categories.includes('electronics')}
                       />
                     }
                     label='Electronics'
@@ -112,6 +113,7 @@ const RightNav = (props) => {
                       <Checkbox
                         value="healthBody"
                         onChange={(e, boolean) => categoryMethodHelper(e.target.value, boolean, props)}
+                        checked={props.categories.includes('healthBody')}
                       />
                     }
                     label="Health & Body"
@@ -123,6 +125,7 @@ const RightNav = (props) => {
                       <Checkbox
                         value="gear"
                         onChange={(e, boolean) => categoryMethodHelper(e.target.value, boolean, props)}
+                        checked={props.categories.includes('gear')}
                       />
                     }
                     label='Gear'

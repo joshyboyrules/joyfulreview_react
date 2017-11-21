@@ -46,7 +46,7 @@ const Header = withRouter(enhanceHeader((props) => {
         <div className={'row align-items-center'} style={{ minHeight: '4rem' }}>
           <div className={'col-12'}>
             <div className="row">
-              <div className="col-8 align-self-center">
+              <div className="col-11 col-md-8 align-self-center">
                 <Link to="/" style={{ color: 'rgba(0, 0, 0, 0.54)', textDecoration: 'none' }}>
                   <h1 className={'custom-header'}>
                     <img

@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
 import { compose, setDisplayName, lifecycle, withState, withProps } from 'recompose'
 import Header from './components/Header'
+import ReactGA from 'react-ga'
 
 import './App.css'
 import Home from './components/Home'
@@ -11,6 +12,8 @@ import About from './components/About'
 import Post from './components/Post'
 import { getHelper } from './utils/requestHelper'
 import SiteMap from './components/SiteMap'
+
+ReactGA.initialize('UA-110471359-1')
 
 const addAppState = compose(
   withState('categories', 'setCategories', []),

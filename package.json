@@ -21,6 +21,7 @@
     "react-document-meta": "^2.1.2",
     "react-dom": "^16.0.0",
     "react-feather": "^1.0.7",
+    "react-ga": "^2.3.5",
     "react-helmet": "^5.2.0",
     "react-render-html": "^0.6.0",
     "react-responsive": "^4.0.0",

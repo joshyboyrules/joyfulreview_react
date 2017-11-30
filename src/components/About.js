@@ -1,8 +1,20 @@
 import React from 'react'
 import classnames from 'classnames'
 import Meta from './Meta'
+import { compose, setDisplayName, lifecycle } from 'recompose'
+import { trackPage } from './withTracker'
 
-const About = (props) => {
+const enhance = compose(
+  setDisplayName('About'),
+  lifecycle({
+    componentDidMount: function () {
+      const page = this.props.location.pathname
+      trackPage(page)
+    }
+  })
+)
+
+const About = enhance((props) => {
   const { className } = props
   return (
     <div className={classnames('About', className)} style={{ padding: '15px' }}>
@@ -12,7 +24,7 @@ const About = (props) => {
       <p>This is the about section, why joyful review is amazing</p>
     </div>
   )
-}
+})
 
 About.propTypes = {}
 About.defaultProps = {}

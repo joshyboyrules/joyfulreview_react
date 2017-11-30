@@ -7,10 +7,12 @@ import Time from 'react-time'
 import { Twitter, Instagram } from 'react-feather'
 import values from 'lodash/values'
 import isObject from 'lodash/isObject'
+
 import { getHelper } from '../utils/requestHelper'
 import OutsideLink from './common/OutsideLink'
 import { convertHtmlToString } from '../utils/utils'
 import YouTubeModal from './common/YouTubeModal'
+import { trackPage } from './withTracker'
 
 // import draftContent from '../articles/draft_article'
 
@@ -90,6 +92,9 @@ const enhance = compose(
         const youtube = getJsonFromTag('youtube')
         this.setState(Object.assign({}, this.state, { author, buy, otherReviews, youtube }))
       })
+
+      const page = this.props.location.pathname
+      trackPage(page)
     },
     componentWillUnmount: function () {
       // console.log('post unmounted')

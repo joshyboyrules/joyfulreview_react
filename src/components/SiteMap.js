@@ -1,7 +1,19 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { compose, setDisplayName, lifecycle } from 'recompose'
+import { trackPage } from './withTracker'
 
-const SiteMap = (props) => {
+const enhance = compose(
+  setDisplayName('SiteMap'),
+  lifecycle({
+    componentDidMount: function () {
+      const page = this.props.location.pathname
+      trackPage(page)
+    }
+  })
+)
+
+const SiteMap = enhance((props) => {
   return (
     <div style={{ padding: '15px' }}>
       <div className="row">
@@ -19,7 +31,7 @@ const SiteMap = (props) => {
       </div>
     </div>
   )
-}
+})
 
 SiteMap.propTypes = {}
 SiteMap.defaultProps = {}

@@ -5,20 +5,20 @@ import { Link } from 'react-router-dom'
 import Time from 'react-time'
 import Divider from 'material-ui/Divider'
 import Meta from './Meta'
+import { trackPage } from './withTracker'
 
-const enhancePosts = compose(
+const enhance = compose(
   setDisplayName('Home'),
   lifecycle({
     componentDidMount: function () {
-      console.log('home mounted')
-      //TODO call get posts here
+      const page = this.props.location.pathname
+      trackPage(page)
     }
   })
 )
 
-const Home = enhancePosts((props) => {
+const Home = enhance((props) => {
   const posts = props.posts
-
   return (
     <div className={'container-fluid max-container-width'}>
       <Meta title={`Joyful Review`} description={`reviewing the things in life that bring joy`}/>

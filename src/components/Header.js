@@ -102,13 +102,13 @@ const Header = withRouter(enhanceHeader((props) => {
                   />
                 </div>
               </MediaQuery>}
-              {onHomePageBoolean && <MediaQuery maxWidth={719}>
-                <div className={'col-1 align-self-center'}>
-                  <RightNav {...props}
-                            type={'transparent'}
-                  />
-                </div>
-              </MediaQuery>}
+              {/*{onHomePageBoolean && <MediaQuery maxWidth={719}>*/}
+                {/*<div className={'col-1 align-self-center'}>*/}
+                  {/*<RightNav {...props}*/}
+                            {/*type={'transparent'}*/}
+                  {/*/>*/}
+                {/*</div>*/}
+              {/*</MediaQuery>}*/}
             </div>
           </div>
         </div>

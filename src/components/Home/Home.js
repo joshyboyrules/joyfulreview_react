@@ -4,8 +4,9 @@ import renderHTML from 'react-render-html'
 import { Link } from 'react-router-dom'
 import Time from 'react-time'
 import Divider from 'material-ui/Divider'
-import Meta from './Meta'
-import { trackPage } from './withTracker'
+import Meta from '../Meta'
+import { trackPage } from '../withTracker'
+import './Home.css'
 
 const enhance = compose(
   setDisplayName('Home'),
@@ -20,7 +21,7 @@ const enhance = compose(
 const Home = enhance((props) => {
   const posts = props.posts
   return (
-    <div className={'container-fluid max-container-width'}>
+    <div className={'container-fluid max-container-width Home'}>
       <Meta title={`Joyful Review`} description={`reviewing the things in life that bring joy`}/>
       <div className="row">
         {posts.map((post, index) => {
@@ -48,6 +49,12 @@ const postTitleHelper = (title) => {
   return string
 }
 
+function stripHtml (html) {
+  var tmp = document.createElement('div')
+  tmp.innerHTML = html
+  return tmp.textContent || tmp.innerText || ''
+}
+
 const IndividualPost = enhanceIndividualPost((props) => {
   const { post } = props
 
@@ -55,20 +62,27 @@ const IndividualPost = enhanceIndividualPost((props) => {
   const featuredImageUrl = post.featured_media_url
 
   return (
-    <Link
-      onClick={() => {
-        console.log('ON CLICK POST !!!!')
-      }}
-      to={`/post/${post.id}/${title}`}
-      style={{ textDecoration: 'none', color: 'black' }}>
+    <Link to={`/post/${post.id}/${title}`} className={'home-post'}>
       <div style={{ width: '100%', padding: '15px' }}>
-        <Divider/><br/>
-        {featuredImageUrl && <img src={featuredImageUrl} width={'100%'} className={'rounded'} alt={title}/>}
-        <h3>{renderHTML(post.title.rendered)}</h3>
-        <h6 className={'text-muted'}>
-          <Time value={post.date_gmt} format="MM/DD/YYYY"/>
-        </h6>
-        <span>{renderHTML(post.excerpt.rendered)}</span>
+        <div>
+          <Divider/>
+        </div>
+        <div style={{ paddingTop: '15px' }}>
+          {featuredImageUrl && <img src={featuredImageUrl} width={'100%'} className={'rounded'} alt={title}/>}
+        </div>
+        <div style={{ paddingTop: '15px', paddingRight: '15px', paddingLeft: '15px' }}>
+          <div style={{ color: '#000', fontWeight: '400', fontSize: '22px' }}>
+            {renderHTML(post.title.rendered)}
+          </div>
+          <div className={'grey-text'} style={{ fontSize: '15px' }}>
+            {stripHtml(post.excerpt.rendered)}
+          </div>
+          <div
+            style={{ fontSize: '14px', color: 'rgba(0,0,0,0.54)', paddingTop: '1rem' }}
+            className={'home-post-date post-section-header'}>
+            <Time value={post.date_gmt} format="MMM DD"/>
+          </div>
+        </div>
       </div>
       <br className={'d-block d-sm-block d-md-none'}/>
     </Link>

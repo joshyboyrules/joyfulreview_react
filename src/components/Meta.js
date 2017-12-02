@@ -3,7 +3,7 @@ import Helmet from 'react-helmet'
 import renderHTML from 'react-render-html'
 // import { basePath } from './Config.js'
 
-const basePath = 'https://www.joyfulreview.com/'
+const basePath = 'https://www.joyfulreview.com'
 
 const locales = {
   'en': 'en_US'
@@ -13,7 +13,7 @@ const Meta = (data) => {
   const lang = data.lang || 'en'
   const title = renderHTML(data.title)
   const description = data.description
-  const image = data.image !== undefined && `${basePath}${data.image}`
+  const image = data.image !== undefined && `${data.image}`
   const canonical = data.canonical !== undefined && `${basePath}${data.canonical}`
   const type = data.type === undefined ? 'article' : 'website'
   const width = data.image && (data.width || 1200)

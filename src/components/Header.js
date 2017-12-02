@@ -46,8 +46,8 @@ const Header = withRouter(enhanceHeader((props) => {
         <div className={'row align-items-center'} style={{ minHeight: '4rem' }}>
           <div className={'col-12'}>
             <div className="row">
-              <div className="col-11 col-md-8 align-self-center">
-                <Link to="/" style={{ color: 'rgba(0, 0, 0, 0.54)', textDecoration: 'none' }}>
+              <div className="col-11 col-md-7 align-self-center">
+                <Link to="/">
                   <h1 className={'custom-header'}>
                     <img
                       alt={'feather icon'}
@@ -59,7 +59,6 @@ const Header = withRouter(enhanceHeader((props) => {
                   </h1>
                 </Link>
               </div>
-              {/*<div className={'col-3 align-self-center d-none d-sm-none d-md-block'}>*/}
               <div
                 className={classnames(
                   'align-self-center',
@@ -68,15 +67,49 @@ const Header = withRouter(enhanceHeader((props) => {
                   'd-md-block',
                   'text-right',
                   {
-                    'col-3': onHomePageBoolean
+                    'col-4': onHomePageBoolean
                   }
                 )}>
-                <Link to="/sitemap" style={{ color: 'rgba(0, 0, 0, 0.54)', textDecoration: 'none' }}>
-                  <span>Directory</span>
+                <Link to="/" style={{ color: 'rgba(0, 0, 0, 0.54)', textDecoration: 'none' }}>
+                  <span
+                    style={
+                      { fontSize: '14px', fontWeight: '500', paddingRight: '40px' }
+                    }
+                    className={classnames(
+                      {
+                        'red-text': onHomePageBoolean, 'grey-text': !onHomePageBoolean
+                      }
+                    )}
+                  >
+                    DIRECTORY
+                  </span>
                 </Link>
-                &nbsp;&nbsp;&nbsp;&nbsp;
+                <Link to="/sitemap" style={{ color: 'rgba(0, 0, 0, 0.54)', textDecoration: 'none' }}>
+                  <span
+                    style={
+                      { fontSize: '14px', fontWeight: '500', paddingRight: '40px' }
+                    }
+                    className={classnames(
+                      {
+                        'red-text': props.location.pathname === '/sitemap',
+                        'grey-text': props.location.pathname !== '/sitemap'
+                      }
+                    )}
+                  >
+                    SITEMAP
+                  </span>
+                </Link>
                 <Link to="/about" style={{ color: 'rgba(0, 0, 0, 0.54)', textDecoration: 'none' }}>
-                  <span>About</span>
+                  <span
+                    style={{ fontSize: '14px', fontWeight: '500' }}
+                    className={classnames(
+                      {
+                        'red-text': props.location.pathname === '/about',
+                        'grey-text': props.location.pathname !== '/about'
+                      }
+                    )}>
+                    ABOUT
+                  </span>
                 </Link>
               </div>
               {!props.drawerOpen &&
@@ -102,13 +135,13 @@ const Header = withRouter(enhanceHeader((props) => {
                   />
                 </div>
               </MediaQuery>}
-              {/*{onHomePageBoolean && <MediaQuery maxWidth={719}>*/}
-                {/*<div className={'col-1 align-self-center'}>*/}
-                  {/*<RightNav {...props}*/}
-                            {/*type={'transparent'}*/}
-                  {/*/>*/}
-                {/*</div>*/}
-              {/*</MediaQuery>}*/}
+              {onHomePageBoolean && <MediaQuery maxWidth={719}>
+                <div className={'col-1 align-self-center'}>
+                  <RightNav {...props}
+                            type={'transparent'}
+                  />
+                </div>
+              </MediaQuery>}
             </div>
           </div>
         </div>

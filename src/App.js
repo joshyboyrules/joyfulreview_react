@@ -2,18 +2,17 @@ import React from 'react'
 import classnames from 'classnames'
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
 import { compose, setDisplayName, lifecycle, withState, withProps } from 'recompose'
-import Header from './components/Header'
 
+import Header from './components/Header'
 import './App.css'
-import Home from './components/Home'
+import Home from './components/Home/Home'
 import PageNotFound from './components/PageNotFound'
 import About from './components/About'
-import Post from './components/Post'
-import { getHelper } from './utils/requestHelper'
+import Post from './components/Post/Post'
 import SiteMap from './components/SiteMap'
 
 const addAppState = compose(
-  withState('categories', 'setCategories', []),
+  withState('categories', 'setCategories', [ 'electronics', 'healthBody', 'gear', 'guide' ]),
   withProps(({ setCategories }) => ({
     updateCategories: (categories) => setCategories(() => categories)
   })),
@@ -40,9 +39,6 @@ const enhance = compose(
       if (window.innerWidth <= 720) {
         this.props.handleDrawerClose()
       }
-      getHelper(`/posts`).then((response) => {
-        this.props.updatePosts(response.data)
-      })
     }
   })
 )

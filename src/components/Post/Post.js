@@ -2,19 +2,25 @@ import React from 'react'
 import { compose, setDisplayName, lifecycle, withState } from 'recompose'
 import isEmpty from 'lodash/isEmpty'
 import renderHTML from 'react-render-html'
-import Meta from './Meta'
+import Meta from '../Meta'
 import Time from 'react-time'
-import { Twitter, Instagram } from 'react-feather'
+import { Twitter, Instagram, Facebook, Mail } from 'react-feather'
 import values from 'lodash/values'
 import isObject from 'lodash/isObject'
+import { ShareButtons, ShareCounts } from 'react-share'
 
-import { getHelper } from '../utils/requestHelper'
-import OutsideLink from './common/OutsideLink'
-import { convertHtmlToString } from '../utils/utils'
-import YouTubeModal from './common/YouTubeModal'
-import { trackPage } from './withTracker'
+import './Post.css'
+import { getHelper } from '../../utils/requestHelper'
+import OutsideLink from '../common/OutsideLink/OutsideLink'
+import { convertHtmlToString } from '../../utils/utils'
+import YouTubeModal from '../common/YouTubeModal'
+import { trackPage } from '../withTracker'
+import { authors } from '../../utils/authors'
 
 // import draftContent from '../articles/draft_article'
+
+const { FacebookShareButton, TwitterShareButton, EmailShareButton } = ShareButtons
+const { FacebookShareCount } = ShareCounts
 
 function stripHtml (string) {
   let string2 = string.replace(/<(?:.|\n)*?>/gm, '') //strip html
@@ -23,7 +29,6 @@ function stripHtml (string) {
 }
 
 function getJsonFromTag (tagString) {
-  // const renderedHtml = renderHTML(html)
 
   const jsonHelper = (json) => {
     const prefix = 'https://'
@@ -34,14 +39,17 @@ function getJsonFromTag (tagString) {
       }
     })
   }
+
   const element = document.getElementById(tagString)
   let json = null
   if (element) {
     json = Object.assign({}, JSON.parse(stripHtml(element.innerHTML)))
     jsonHelper(json)
   }
-
-  if (tagString === 'buy' || tagString === 'other-reviews' || tagString === 'youtube') {
+  if (tagString === 'author') {
+    const author_id = json && json.author_id ? json.author_id : null
+    return author_id ? authors[ author_id ] : authors[ 1 ]
+  } else if (tagString === 'buy' || tagString === 'other-reviews' || tagString === 'youtube') {
     if (json) {
       json = values(json)
       json.forEach(obj => {
@@ -72,7 +80,6 @@ const enhance = compose(
       const firstPromise = new Promise((resolve, reject) => {
         const id = this.props.match.params.id
         if (id === 'draft') {
-          console.log('post draft mode')
           const post = { content: { rendered: 'draftContent' }, title: { rendered: 'draft mode' } }
           this.setState(Object.assign({}, this.state, { post }))
           resolve()
@@ -97,13 +104,17 @@ const enhance = compose(
       trackPage(page)
     },
     componentWillUnmount: function () {
-      // console.log('post unmounted')
     }
   })
 )
 
 const Post = enhance((props) => {
   const { post, author, buy, otherReviews, youtube } = props
+  const basePath = 'https://www.joyfulreview.com'
+  const pathname = props.location.pathname
+  const postUrl = `${basePath}${pathname}`
+
+  const isGuideBoolean = post && Array.isArray(post.categories) && post.categories.includes(100866)
 
   if (isEmpty(post)) {
     return <div/>
@@ -112,22 +123,62 @@ const Post = enhance((props) => {
     const excerpt = post && post.excerpt && post.excerpt.rendered ? convertHtmlToString(post.excerpt.rendered) : 'N/A'
     const featuredImageUrl = post.featured_media_url
     return (
-      <div className={'container-fluid max-container-width'}>
+      <div className={`container-fluid max-container-width MyPost`}>
         <Meta title={`${title} | Joyful Review`} description={excerpt} image={featuredImageUrl}/>
         <div className={'row'}>
           <div className="col-md-3">
             <hr/>
             <small>Title</small>
             <h4>{renderHTML(post.title.rendered)}</h4>
-            <h6 className={'text-muted'}>
-              Published: <Time value={post.date_gmt || new Date()} format="MM/DD/YYYY"/>
+            <h6 className={'grey-text'}>
+              <Time value={post.date_gmt || new Date()} format="MMM DD"/>
             </h6>
+            <hr/>
+            <small>Share</small>
+            <div className="row">
+              <div className="col-3 text-center">
+                <FacebookShareButton
+                  url={postUrl}
+                  hashtag={'#joyfulreview'}
+                >
+                  <Facebook
+                    className={'hover-click facebook-click'}
+                    size={30}
+                  />
+                  <FacebookShareCount url={postUrl}/>
+                </FacebookShareButton>
+              </div>
+              <div className="col-3 text-center">
+                <TwitterShareButton
+                  url={postUrl}
+                  title={`${renderHTML(post.title.rendered)} from joyfulreview`}
+                  via={`joyfulreview`}
+                >
+                  <Twitter
+                    className={'hover-click twitter-click'}
+                    size={30}
+                  />
+                </TwitterShareButton>
+              </div>
+              <div className="col-3 text-center">
+                <EmailShareButton url={postUrl}
+                                  subject={`${renderHTML(post.title.rendered)} from joyfulreview`}
+                                  body={postUrl}
+                >
+                  <Mail
+                    className={'hover-click email-click'}
+                    size={30}
+                  />
+                </EmailShareButton>
+              </div>
+            </div>
           </div>
           <div className={'col-md-6'}>
             <hr/>
             <small>Article</small>
             <div>
               {renderHTML(post.content.rendered)}
+              <br/><br/><br/>
             </div>
           </div>
           {/* Right Column*/}
@@ -140,7 +191,7 @@ const Post = enhance((props) => {
                   <img src={author.image} className={'rounded'} width={'100%'} alt={author.name}/>
                 </div>
                 <div className="col-9" style={{ paddingLeft: '10px' }}>
-                  <small><strong>{author.name}</strong></small>
+                  <small className={'bold'}>{author.name}</small>
                   <br/>
                   <small>{author.position}</small>
                   <br/>
@@ -170,7 +221,7 @@ const Post = enhance((props) => {
               <br/>
               {buy.map((obj, index) => <div key={index} style={{ paddingTop: '12px' }}>
                 <button
-                  className={'btn btn-blue hover-click'}
+                  className={'btn btn-joy hover-click'}
                   onClick={() => {
                     window.open(obj.link, '_blank')
                   }}>{obj.title}</button>
@@ -178,7 +229,7 @@ const Post = enhance((props) => {
             </div>}
             {Array.isArray(otherReviews) && otherReviews.length > 0 && <div>
               <hr/>
-              <small>Other Reviews</small>
+              <small>{`Other ${isGuideBoolean ? 'Resources' : 'Reviews'}`}</small>
               <br/>
               {otherReviews.map((obj, index) => <div key={index}>
                 <OutsideLink url={obj.link} text={obj.title}/>

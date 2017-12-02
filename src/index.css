@@ -1,10 +1,11 @@
-/*body {*/
-/*margin: 0;*/
-/*padding: 0;*/
-/*font-family: 'sans-serif';*/
-/*}*/
-/*@font-face {*/
-/*font-family: 'Permanent Marker';*/
-/*src: local('Permanent Marker'), url(./fonts/PermanentMarker-Regular.ttf) format('ttf');*/
-/*}*/
+html * {
+  font-family: 'Roboto', sans-serif !important;
+  line-height: 1.618rem;
+}
+
+.hover-click {
+  cursor: pointer
+}
+
 @import url('https://fonts.googleapis.com/css?family=Inconsolata|Merriweather');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700');

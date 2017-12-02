@@ -11,7 +11,7 @@
     "feather-icons": "^4.0.1",
     "gh-pages": "^1.1.0",
     "lodash": "^4.17.4",
-    "material-ui": "next",
+    "material-ui": "1.0.0-beta.22",
     "material-ui-icons": "1.0.0-beta.17",
     "moment": "^2.19.3",
     "react": "^16.2.0",
@@ -26,6 +26,7 @@
     "react-render-html": "^0.6.0",
     "react-responsive": "^4.0.3",
     "react-router-dom": "^4.2.2",
+    "react-share": "^1.17.0",
     "react-time": "^4.3.0",
     "react-transition-group": "^2.2.1",
     "react-youtube": "^7.5.0",
@@ -42,7 +43,7 @@
     "eslint-plugin-standard": "^3.0.1",
     "klaw": "^2.1.1",
     "react-scripts": "1.0.17",
-    "react-snap": "^1.1.1"
+    "react-snap": "0.9.0"
   },
   "scripts": {
     "start": "react-scripts start",

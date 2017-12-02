@@ -1,42 +1,16 @@
-html * {
-  font-family: 'Inconsolata', monospace !important;
-  font-size: 17px;
-  line-height: 1.618em;
+:root {
+  --main-color: #F25F5C;
 }
 
 .header {
   background-color: #fff;
-  /*padding: 20px;*/
   margin-bottom: 20px;
-  /*border-color: rgba(0, 0, 0, 0.14);*/
   color: rgba(0, 0, 0, 0.54);
   border-bottom: 1px solid lightgrey;
   position: -webkit-sticky;
   position: sticky;
   top: 0;
   z-index: 1;
-}
-
-.content {
-  position: relative;
-}
-
-.vcenter {
-  display: inline-block;
-  vertical-align: middle;
-  float: none;
-}
-
-.hover-click {
-  cursor: pointer
-}
-
-.twitter-click:hover {
-  color: deepskyblue;
-}
-
-.instagram-click:hover {
-  color: mediumvioletred;
 }
 
 @media screen and (min-width: 720px) {
@@ -46,40 +20,34 @@ html * {
 }
 
 .custom-header {
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.54);
+  textDecoration: none;
+}
+
+.custom-header:hover {
+  color: var(--main-color);
+  text-decoration: underline;
+  text-decoration-color: var(--main-color);
+}
+
+.bold {
   font-weight: 700;
 }
 
-h5 {
-  display: inline-block;
-  font-weight: bold;
-  /*padding-left: 10px;*/
-  /*padding-right: 10px;*/
-  /*border: 1px solid lightgrey;*/
+.red-text {
+  color: var(--main-color);
+}
+
+.grey-text {
+  color: rgba(0, 0, 0, 0.54);
 }
 
 .max-container-width {
   max-width: 1440px;
 }
 
-img.desaturate {
-  filter: grayscale(100%);
-}
-
-.btn-blue {
-  background-color: #007bff;
-  color: #fff;
-}
-
-.checkbox-joy {
-  padding-bottom: 10px;
-  padding-top: 10px;
-}
-
 *:focus {
   outline: 0;
   outline: none;
-}
-
-.post-section-header {
-  font-size: 1.8em
 }

@@ -1,0 +1,7 @@
+.outside-link {
+  color: var(--main-color);
+}
+
+.outside-link:hover {
+  text-decoration: underline;
+}

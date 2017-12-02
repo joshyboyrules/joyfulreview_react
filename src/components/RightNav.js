@@ -3,13 +3,14 @@ import Drawer from 'material-ui/Drawer'
 import ChevronRightIcon from 'material-ui-icons/ChevronRight'
 import IconButton from 'material-ui/IconButton'
 import Checkbox from 'material-ui/Checkbox'
-import { FormControlLabel } from 'material-ui/Form'
+import { withStyles } from 'material-ui/styles'
+import classnames from 'classnames'
+import { compose, setDisplayName, lifecycle } from 'recompose'
 
 import debounce from 'lodash/debounce'
 import { getHelper } from '../utils/requestHelper'
 
 const searchPosts = debounce((searchValue, updatePosts, categories) => {
-  console.log('categories', categories)
   if (searchValue) {
     let stringSearch = `/posts?search=${searchValue}`
     if (categories.length) {
@@ -56,10 +57,28 @@ const categoryMethodHelper = (newCategory, boolean, props) => {
 const categoryMapper = {
   healthBody: '115002',
   gear: '347',
-  electronics: '7334'
+  electronics: '7334',
+  guide: '100866'
 }
 
-const RightNav = (props) => {
+const styles = {
+  checked: {
+    color: '#F25F5C'
+  }
+}
+
+const enhance = compose(
+  setDisplayName('RightNav'),
+  lifecycle({
+    componentDidMount: function () {
+      console.log('right nav did mount')
+      const props = this.props
+      searchPosts('', props.updatePosts, props.categories)
+    }
+  })
+)
+
+const RightNav = enhance((props) => {
   return (
     <span>
       {props.drawerOpen &&
@@ -94,43 +113,30 @@ const RightNav = (props) => {
           <div className="container">
             <div className="row">
               <div className="col-12" style={{ paddingLeft: '20px', paddingTop: '20px' }}>
-                <strong style={{ fontSize: '16px' }}>Categories</strong><br/>
-                <div>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        value="electronics"
-                        onChange={(e, boolean) => categoryMethodHelper(e.target.value, boolean, props)}
-                        checked={props.categories.includes('electronics')}
-                      />
-                    }
-                    label='Electronics'
-                  />
-                </div>
-                <div style={{ marginTop: '-20px' }}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        value="healthBody"
-                        onChange={(e, boolean) => categoryMethodHelper(e.target.value, boolean, props)}
-                        checked={props.categories.includes('healthBody')}
-                      />
-                    }
-                    label="Health & Body"
-                  />
-                </div>
-                <div style={{ marginTop: '-20px' }}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        value="gear"
-                        onChange={(e, boolean) => categoryMethodHelper(e.target.value, boolean, props)}
-                        checked={props.categories.includes('gear')}
-                      />
-                    }
-                    label='Gear'
-                  />
-                </div>
+                <span
+                  style={{ fontSize: '14px', fontWeight: '500' }}>
+                  Categories
+                </span>
+                <CategorySelector
+                  category={'electronics'}
+                  categoryName={'Electronics'}
+                  {...props}
+                />
+                <CategorySelector
+                  category={'healthBody'}
+                  categoryName={'Health & Body'}
+                  {...props}
+                />
+                <CategorySelector
+                  category={'gear'}
+                  categoryName={'Gear'}
+                  {...props}
+                />
+                <CategorySelector
+                  category={'guide'}
+                  categoryName={'Guide'}
+                  {...props}
+                />
               </div>
             </div>
           </div>
@@ -138,6 +144,30 @@ const RightNav = (props) => {
       </Drawer>
     </span>
   )
+})
+
+const CategorySelector = (props) => {
+  const classes = props.classes
+  const category = props.category
+  const categoryName = props.categoryName
+  const checkedBoolean = props.categories.includes(category)
+  return <div className="row" style={{ marginBottom: '-10px' }}>
+    <div className="col-2"
+         style={{ marginLeft: '-11px', marginRight: '5px' }}>
+      <Checkbox
+        value={category}
+        onChange={(e, boolean) => categoryMethodHelper(e.target.value, boolean, props)}
+        checked={checkedBoolean}
+        classes={{ checked: classes.checked }}
+      />
+    </div>
+    <div className="col-10">
+      <label style={{ paddingTop: '13px', fontSize: '15px' }}
+             className={classnames('hover-click', { 'red-text': checkedBoolean })}
+             onClick={() => categoryMethodHelper(category, !checkedBoolean, props)}
+      >{categoryName}</label>
+    </div>
+  </div>
 }
 
-export default RightNav
+export default withStyles(styles)(RightNav)

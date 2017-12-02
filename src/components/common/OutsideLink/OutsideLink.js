@@ -1,14 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
-const linkStyle = { color: '#007bff' }
+import './OutsideLink.css'
 
 const OutsideLink = (props) => {
   const { url, text } = props
   return (
     <span
-      className={'hover-click'}
-      style={linkStyle}
+      className={'hover-click outside-link'}
       onClick={() => window.open(url, '_blank')}>
       {text}
     </span>

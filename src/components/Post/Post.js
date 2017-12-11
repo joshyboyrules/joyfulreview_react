@@ -75,7 +75,7 @@ const enhance = compose(
   setDisplayName('Post'),
   addPostState,
   lifecycle({
-    componentDidMount: function () {
+    componentWillMount: function () {
 
       const firstPromise = new Promise((resolve, reject) => {
         const id = this.props.match.params.id
@@ -102,8 +102,6 @@ const enhance = compose(
 
       const page = this.props.location.pathname
       trackPage(page)
-    },
-    componentWillUnmount: function () {
     }
   })
 )

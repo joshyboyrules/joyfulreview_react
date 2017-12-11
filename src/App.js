@@ -9,7 +9,9 @@ import Home from './components/Home/Home'
 import PageNotFound from './components/PageNotFound'
 import About from './components/About'
 import Post from './components/Post/Post'
+import Post2 from './components/Post2/Post2'
 import SiteMap from './components/SiteMap'
+import Home2 from './components/Home2/Home2'
 
 const addAppState = compose(
   withState('categories', 'setCategories', [ 'electronics', 'healthBody', 'gear', 'guide' ]),
@@ -67,13 +69,19 @@ const App = enhance((props) => {
 })
 
 const Switcher = (props) => {
-  const { posts } = props
+  const { posts, categories, updatePosts } = props
   return (
     <Switch>
-      <Route exact path="/" render={props => <Home posts={posts} {...props}/>}/>
+      <Route exact path="/" render={props => <Home2
+        {...props}
+        updatePosts={updatePosts}
+        posts={posts}
+        categories={categories}
+      />}
+      />
       <Route exact path="/about" component={About}/>
       <Route exact path="/sitemap" component={SiteMap}/>
-      <Route path="/post/:id/:title" component={Post}/>
+      <Route path="/post/:id/:title" component={Post2}/>
       <Route component={PageNotFound}/>
     </Switch>
   )

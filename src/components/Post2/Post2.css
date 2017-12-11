@@ -1,0 +1,46 @@
+.MyPost p {
+  margin-top: 1.2rem !important;
+  margin-bottom: 0px !important;
+}
+
+.MyPost ul {
+  margin-top: 1.2rem !important;
+  margin-bottom: 0px !important;
+}
+
+.MyPost .post-section-header {
+  margin-top: 2rem;
+  font-size: 24px;
+  font-weight: 500;
+  display: block;
+}
+
+.MyPost .post-picture {
+  padding-top: 0.6rem;
+}
+
+.MyPost a {
+  color: var(--main-color) !important;
+  /*text-decoration: none !important;*/
+}
+
+.MyPost .btn-joy {
+  background-color: var(--main-color);
+  color: #fff;
+}
+
+.MyPost .twitter-click:hover {
+  color: deepskyblue;
+}
+
+.MyPost .facebook-click:hover {
+  color: #3b5998;
+}
+
+.MyPost .email-click:hover {
+  color: var(--main-color);
+}
+
+.MyPost .instagram-click:hover {
+  color: mediumvioletred;
+}

@@ -22,11 +22,11 @@ const SiteMap = enhance((props) => {
         </div>
         <div className="col-md-6">
           <ul>
-            <li><Link to="/post/51/My-Daily-Driver-Phone-2017">My Daily Driver Phone 2017</Link></li>
-            <li><Link to="/post/114/I-Eat-this-Protein-Bar-Everyday">I Eat this Protein Bar Everyday</Link></li>
-            <li><Link to="/post/143/My-warm-companion-Zojirushi-stainless-mug">My warm companion: Zojirushi stainless mug</Link></li>
-            <li><Link to="/post/173/Men-body-hair-maintenance-products">Men’s body hair maintenance products</Link></li>
-            <li><Link to="/post/208/Freezing-your-Credit">Freezing your Credit</Link></li>
+            <li><Link to="/post/5/freezing-your-credit">Freezing your Credit</Link></li>
+            <li><Link to="/post/4/mens-hair-maintenance-products">Men’s body hair maintenance products</Link></li>
+            <li><Link to="/post/3/my-warm-companion-zojirushi-stainless-mug">My warm companion: Zojirushi stainless mug</Link></li>
+            <li><Link to="/post/2/i-eat-this-protein-bar-everyday">I Eat this Protein Bar Everyday</Link></li>
+            <li><Link to="/post/1/my-daily-driver-phone-2017">My Daily Driver Phone 2017</Link></li>
           </ul>
         </div>
       </div>

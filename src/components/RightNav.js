@@ -6,39 +6,15 @@ import Checkbox from 'material-ui/Checkbox'
 import { withStyles } from 'material-ui/styles'
 import classnames from 'classnames'
 import { compose, setDisplayName, lifecycle } from 'recompose'
-
+import cloneDeep from 'lodash/cloneDeep'
 import debounce from 'lodash/debounce'
-import { getHelper } from '../utils/requestHelper'
+import values from 'lodash/values'
+import sortBy from 'lodash/sortBy'
+import reverse from 'lodash/reverse'
+import intersection from 'lodash/intersection'
+import toLower from 'lodash/toLower'
 
-const searchPosts = debounce((searchValue, updatePosts, categories) => {
-  if (searchValue) {
-    let stringSearch = `/posts?search=${searchValue}`
-    if (categories.length) {
-      categories.forEach((category, index) => {
-        stringSearch += `&categories[${index}]=${categoryMapper[ category ]}`
-      })
-    }
-    getHelper(stringSearch).then((response) => {
-      updatePosts(response.data)
-    })
-  } else if (categories.length) {
-    let stringSearch = '/posts'
-    categories.forEach((category, index) => {
-      if (index === 0) {
-        stringSearch += `?categories[${index}]=${categoryMapper[ category ]}`
-      } else {
-        stringSearch += `&categories[${index}]=${categoryMapper[ category ]}`
-      }
-    })
-    getHelper(stringSearch).then((response) => {
-      updatePosts(response.data)
-    })
-  } else {
-    getHelper(`/posts`).then((response) => {
-      updatePosts(response.data)
-    })
-  }
-}, 300)
+import articles from '../articles'
 
 const categoryMethodHelper = (newCategory, boolean, props) => {
   let newCategories = []
@@ -54,24 +30,32 @@ const categoryMethodHelper = (newCategory, boolean, props) => {
   searchPosts(props.searchValue, props.updatePosts, newCategories)
 }
 
-const categoryMapper = {
-  healthBody: '115002',
-  gear: '347',
-  electronics: '7334',
-  guide: '100866'
-}
+export const searchPosts = debounce((searchValue, updatePosts, categories) => {
+  let posts = cloneDeep(values(articles))
 
-const styles = {
-  checked: {
-    color: '#F25F5C'
+  // category filtering
+  posts = posts.filter(post => intersection(post.categories, categories).length)
+
+  // searching
+  const lowerCaseSearchValue = toLower(searchValue)
+  if (lowerCaseSearchValue) {
+    posts = posts.filter(post => {
+      return post.stringifyContent.indexOf(lowerCaseSearchValue) !== -1
+    })
   }
-}
+
+  // sorting
+  posts = reverse(sortBy(values(posts), 'published')) // poor performance
+
+  updatePosts(posts)
+}, 0)
+
+const styles = { checked: { color: '#F25F5C' } }
 
 const enhance = compose(
   setDisplayName('RightNav'),
   lifecycle({
-    componentDidMount: function () {
-      console.log('right nav did mount')
+    componentWillMount: function () {
       const props = this.props
       searchPosts('', props.updatePosts, props.categories)
     }
